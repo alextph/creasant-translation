@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="col-sm-6"></div><div class="col-sm-6 text-right">
+        <a class="btn btn-success btn-sm text-uppercase" ng-if="$ctrl.data.addItem" ng-href="{{$ctrl.data.addItemURL}}">
+            <i class="fas fa-plus"></i>&nbsp;&nbsp;CREATE NEW {{$ctrl.data.pageTitle}}</a>
+    </div>
+</div>
+
+<div class="empty-msg text-center" ng-if="$ctrl.data.emptyData">
+    No related record found
+</div>
+<br/>
+<table st-table="$ctrl.data.table_content" st-safe-src="$ctrl.data.table_pagination" class="table table-striped" ng-if="!$ctrl.data.emptyData">
+    <thead>
+        <tr>
+            <td colspan="100%">
+                <div class="row">
+                    <div class="col-sm-6 align-middle"><select style="width: 55px;" ng-model="$ctrl.data.rowsPerPage" ng-selected="$ctrl.data.rowsPerPage">
+                        <option ng-value="10">10</option>
+                        <option ng-value="25">25</option>
+                        <option ng-value="50">50</option>
+                    </select>&nbsp;&nbsp;per page</div><div class="col-sm-6 text-right align-middle" ng-bind="'Total ' + $ctrl.data.table_content_count + ' Record(s)'"></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th ng-if="$ctrl.data.hasCheckBox"><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /></th>
+            <th ng-repeat="(key, value) in $ctrl.data.table_header" st-sort="{{value.field}}" ng-bind="key"></th>
+            <th ng-if="$ctrl.data.editItem"></th>
+            <th ng-if="$ctrl.data.removeItem"></th>
+        </tr>
+
+        <tr>
+            <th ng-if="$ctrl.data.hasCheckBox"></th>
+            <th ng-repeat="(key, value) in $ctrl.data.table_header"><input type="{{value.search_type}}" st-search="{{value.field}}" placeholder="Search for {{key}}" /></th>
+            <th ng-if="$ctrl.data.editItem"></th>
+            <th ng-if="$ctrl.data.removeItem"></th>
+        </tr>
+
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in $ctrl.data.table_content">
+            <td ng-if="$ctrl.data.hasCheckBox"><input type="checkbox" name="chk_id[]" ng-checked="selected" ng-value="item.{{$ctrl.data.pageID}}_id" ng-click="updateCheckAll()" /></td>
+            <td ng-repeat="(key, value) in $ctrl.data.table_header" ng-class="value.class" ng-bind="item.{{value.field}}{{value.filter}}"></td>
+            <td ng-if="$ctrl.data.editItem"><a class="btn btn-info btn-sm text-uppercase" ng-if="$ctrl.data.editItem" ng-href="{{$ctrl.data.editItemURL}}"><i class="fas fa-pen"></i>&nbsp;&nbsp;Edit</a></td>
+            <td ng-if="$ctrl.data.removeItem"><a class="btn btn-danger btn-sm text-uppercase" ng-if="$ctrl.data.removeItem" ng-href="{{$ctrl.data.removeItemURL}}"><i class="fas fa-trash"></i>&nbsp;&nbsp;Remove</a></td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="100%">
+                <div class="row">
+                    <div class="col-sm-6 align-middle"><select style="width: 55px;" ng-model="$ctrl.data.rowsPerPage" ng-selected="$ctrl.data.rowsPerPage">
+                        <option ng-value="10" >10</option>
+                        <option ng-value="25" >25</option>
+                        <option ng-value="50">50</option>
+                    </select>&nbsp;&nbsp;per page</div><div class="col-sm-6 text-right align-middle" ng-bind="'Total ' + $ctrl.data.table_content_count + ' Record(s)'"></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="100%">
+                <div class="float-right" st-pagination="" st-items-by-page="$ctrl.data.rowsPerPage" st-displayed-pages="7"></div>
+            </td>
+        </tr>
+    </tfoot>
+
+</table>

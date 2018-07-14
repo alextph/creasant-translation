@@ -1,0 +1,20 @@
+<div id="sidebar" class="open" ng-if="islogged">
+    <div class="user-info">
+        <img class="profile-pic" ng-src="{{userProfilePic}}" />
+        <div class="info">
+            <div class="name" ng-bind="userName"></div>
+            <div class="user-level" ng-bind="userLevel"></div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="topic">NAVIGATION</div>
+        <ul>
+            <li ng-repeat="item in items" ng-class="{ active: isActive('{{item.page}}')}">
+                <a ng-href="{{item.href}}">
+                    <i ng-class="(!item.icon) ? 'fas fa-stream' : item.icon"></i><span ng-bind="item.name"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

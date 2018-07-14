@@ -1,0 +1,7 @@
+<div id="search-wrapper" ng-class="{'searching': keyword}">
+    <div class="position-relative">
+        <span class="fa fa-search"></span>
+        <input type="text" ng-model="keyword" ng-change="fetchSearch()" placeholder="What are you searching for?" autofocus />
+    </div>
+    <div id="search-result" ng-bind-html="searchResult"></div>
+</div>

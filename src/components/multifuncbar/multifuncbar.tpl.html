@@ -1,0 +1,14 @@
+<section id="multi-func-bar" ng-class="{top: islogged}">
+    <div class="nav-toggle" ng-if="islogged" ng-click="toggleNav()">
+        <span><i class="fa fa-bars fa-1x"></i></span>
+    </div>
+
+    <div class="container text-center">
+        <img src="assets/images/logo.png" />
+    </div>
+
+    <div class="logout" ng-if="islogged">
+        <button type="button" class="btn btn-secondary" ng-click="logout()">
+        <i class="fas fa-sign-out-alt"></i>&nbsp;Logout</button>
+    </div>
+</section>

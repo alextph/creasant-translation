@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MB Translation</title>
+    <link rel="icon" type="image/png" href="assets/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./styles/main.css" type="text/css" />
+    <!-- endbuild -->
+</head>
+<body ng-app="app">
+
+    <side-bar></side-bar>
+
+    <section id="main">
+        <ng-view autoscroll="true"></ng-view>
+    </section>
+
+    <multi-func-bar></multi-func-bar>
+
+    <script src="scripts/bundle.js"></script>
+</body>
+</html>
