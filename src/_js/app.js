@@ -27,6 +27,7 @@ import '../services/sessionService'
 
 import 'angular-sweetalert'
 import 'angular-smart-table'
+import 'angularjs-datetime-picker-v2'
 
-angular.module('app', ['ngRoute', 'ngAnimate', 'ngSanitize', 'app.routes', 'app.core', 'app.services', 'app.config', 'loginService', 'sessionService', 'oitozero.ngSweetAlert', 'smart-table'
+angular.module('app', ['ngRoute', 'ngAnimate', 'ngSanitize', 'app.routes', 'app.core', 'app.services', 'app.config', 'loginService', 'sessionService', 'oitozero.ngSweetAlert', 'smart-table', 'angularjs-datetime-picker'
 ]);

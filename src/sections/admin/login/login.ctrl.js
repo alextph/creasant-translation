@@ -9,7 +9,8 @@ angular
 
             loginService.login(this.username, this.password, $scope);
 
-            $scope.error = '';
+            $scope.errorMsg = '';
+            $scope.loginFrm.$setPristine();
             this.username = '';
             this.password = '';
         }

@@ -2,20 +2,24 @@
     <div class="login-panel">
         <div class="title">{{loading ? 'Loading...' : 'Login'}}</div>
 
-        <form ng-submit="formSubmit()" class="form">
+        <form ng-submit="formSubmit()" name="loginFrm" class="form" novalidate>
             <div class="form-group">
-                <input type="text" class="form-control" ng-model="username" placeholder="Username" ng-required="true" ng-disabled="loading"
-                />
+                <input type="text" class="form-control" name="username" ng-model="username" placeholder="Username" ng-required="true" ng-disabled="loading" />
+                <div class="error text-right" ng-show="loginFrm.username.$dirty && loginFrm.username.$invalid">
+                    <span ng-show="loginFrm.username.$error.required">This field is required.</span>
+                </div>
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" ng-model="password" placeholder="Password" ng-required="true" ng-disabled="loading"
-                />
+                <input type="password" class="form-control" name="password" ng-model="password" placeholder="Password" ng-required="true" ng-disabled="loading" />
+                <div class="error text-right" ng-show="loginFrm.password.$dirty && loginFrm.password.$invalid">
+                    <span ng-show="loginFrm.password.$error.required">This field is required.</span>
+                </div>
             </div>
             <div class="form-group">
-                <div class="text-danger" style="color:red">{{ errorMsg }}</div>
+                <div class="error">{{ errorMsg }}</div>
             </div>
             <div class="form-group text-right">
-                <button type="submit" class="btn btn-success" ng-disabled="loading">Sign In</button>
+                <button type="submit" class="btn btn-success" ng-disabled="loading || !loginFrm.$valid">Sign In</button>
             </div>
         </form>
     </div>

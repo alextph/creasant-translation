@@ -2,6 +2,8 @@
 angular
     .module('app.core')
     .controller('AddController', function ($scope, $routeParams) {
+        let today = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate();
+
         $scope.pageData = [];
         let pageTitle = '[Page Title]';
         let form_field = [];
@@ -12,13 +14,14 @@ angular
                 form_field = {
                     'Launch Date': {
                         'required': true,
+                        'readonly': true,
                         'disabled': false,
                         'field': 'launch_date',
                         'type': 'date',
-                        'min': '',
+                        'format': 'yyyy-MM-dd',
+                        'min': today,
                         'max': '',
-                        'placeholder': '',
-                        'filter': '',
+                        'placeholder': 'Choose Date..',
                         'fieldClass': '',
                         'fieldStyle': 'width: 49.5%;',
                         'wrapperClass': '',
@@ -27,6 +30,7 @@ angular
                     },
                     'Title (EN)': {
                         'required': true,
+                        'readonly': false,
                         'disabled': false,
                         'field': 'title_en',
                         'type': 'text',
@@ -40,6 +44,7 @@ angular
                     },
                     'Title (TC)': {
                         'required': true,
+                        'readonly': false,
                         'disabled': false,
                         'field': 'title_tc',
                         'type': 'text',
@@ -53,6 +58,7 @@ angular
                     },
                     'Slogan (EN)': {
                         'required': true,
+                        'readonly': false,
                         'disabled': false,
                         'field': 'slogan_en',
                         'type': 'textarea',
@@ -66,6 +72,7 @@ angular
                     },
                     'Slogan (TC)': {
                         'required': true,
+                        'readonly': false,
                         'disabled': false,
                         'field': 'slogan_tc',
                         'type': 'textarea',
@@ -90,17 +97,17 @@ angular
                             {
                                 id: 1,
                                 name: 'Opt 1',
-                                disabled: false
+                                disabled: false,
                             },
                             {
                                 id: 2,
                                 name: 'Opt 2',
-                                disabled: false
+                                disabled: false,
                             },
                             {
                                 id: 3,
                                 name: 'Opt 3',
-                                disabled: false
+                                disabled: false,
                             },
                         ],
                         'filter': '',
@@ -119,20 +126,19 @@ angular
                             {
                                 id: 1,
                                 name: 'Opt 1',
-                                disabled: false
+                                disabled: false,
                             },
                             {
                                 id: 2,
                                 name: 'Opt 2',
-                                disabled: false
+                                disabled: false,
                             },
                             {
                                 id: 3,
                                 name: 'Opt 3',
-                                disabled: false
+                                disabled: false,
                             },
                         ],
-                        'filter': '',
                         'fieldClass': '',
                         'fieldStyle': '',
                         'wrapperClass': '',
@@ -148,27 +154,41 @@ angular
                         'option': [{
                                 id: 1,
                                 name: 'Opt 1',
-                                disabled: false
+                                disabled: false,
                             },
                             {
                                 id: 2,
                                 name: 'Opt 2',
-                                disabled: false
+                                disabled: false,
                             },
                             {
                                 id: 3,
                                 name: 'Opt 3',
-                                disabled: false
+                                disabled: false,
                             },
                         ],
-                        'filter': '',
                         'fieldClass': '',
                         'fieldStyle': '',
                         'wrapperClass': '',
                         'wrapperStyle': '',
                         'wrapperInline': 'none'
                     },
-
+                    'Date Time': {
+                        'required': true,
+                        'readonly': true,
+                        'disabled': false,
+                        'field': 'launch_date2',
+                        'type': 'datetime',
+                        'format': 'yyyy-MM-dd HH:mm:ss',
+                        'min': today,
+                        'max': today,
+                        'placeholder': 'Choose Date..',
+                        'fieldClass': '',
+                        'fieldStyle': 'width: 49.5%;',
+                        'wrapperClass': '',
+                        'wrapperStyle': '',
+                        'wrapperInline': 'none'
+                    },
                 }
                 break;
 

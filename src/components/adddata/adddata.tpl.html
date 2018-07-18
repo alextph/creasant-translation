@@ -1,16 +1,16 @@
-<form ng-submit="formSubmit()" class="form">
+<form name="addFrm" ng-submit="formSubmit()" class="form" novalidate>
 
     <div class="form-group text-right hints text-danger">* Compulsory</div>
 
     <div ng-repeat="(field, value) in $ctrl.data.form_field" ng-class="{ 
-            'd-inline-block' : value.wrapperInline != 'none', 
-            'd-inline-block-left' : value.wrapperInline == 'left', 
-            'd-inline-block-right' : value.wrapperInline == 'right',
+            'd-inline-block align-top' : value.wrapperInline != 'none', 
+            'd-inline-block-left align-top' : value.wrapperInline == 'left', 
+            'd-inline-block-right align-top' : value.wrapperInline == 'right',
             'required' : value.required
         }" class="form-group {{ value.wrapperClass }}" style="{{ value.wrapperStyle }}">
         <label for="{{ value.field }}">{{ field }}</label><br/>
 
-        <input ng-if="value.type === 'text' || value.type === 'date' || value.type === 'number' || value.type === 'password'" 
+        <input ng-if="value.type === 'text' || value.type === 'number' || value.type === 'password'" 
                 type="{{ value.type }}" 
                 class="{{ value.fieldClass }} form-control"
                 style="{{ value.fieldStyle }}" 
@@ -22,7 +22,43 @@
                 ng-model="formData.parameters[value.field]" 
                 ng-required="value.required" 
                 ng-disabled="value.disabled"
+                ng-readonly="value.readonly"
         />
+
+        <input ng-if="value.type === 'date'"
+                    class="{{ value.fieldClass }} form-control datepicker"
+                    style="{{ value.fieldStyle }}" 
+                    id="{{ value.field }}" 
+                    name="{{ value.field }}" 
+                    placeholder="{{ value.placeholder }}" 
+                    ng-model="formData.parameters[value.field]" 
+                    ng-required="value.required" 
+                    ng-disabled="value.disabled"
+                    ng-readonly="value.readonly"
+                    datetime-picker
+                    date-format="{{ value.format }}"
+                    start-date="{{ value.min }}"
+                    end-date="{{ value.max }}"
+                    date-only
+        />
+
+
+        <input ng-if="value.type === 'datetime'"
+                    class="{{ value.fieldClass }} form-control datepicker"
+                    style="{{ value.fieldStyle }}" 
+                    id="{{ value.field }}" 
+                    name="{{ value.field }}" 
+                    placeholder="{{ value.placeholder }}" 
+                    ng-model="formData.parameters[value.field]" 
+                    ng-required="value.required" 
+                    ng-disabled="value.disabled"
+                    ng-readonly="value.readonly"
+                    datetime-picker
+                    date-format="{{ value.format }}"
+                    start-date="{{ value.min }}"
+                    end-date="{{ value.max }}"
+        />
+
 
         <textarea ng-if="value.type === 'textarea'" 
                   class="{{ value.fieldClass }} form-control" 
@@ -32,7 +68,9 @@
                   placeholder="{{ value.placeholder }}" 
                   ng-model="formData.parameters[value.field]" 
                   ng-required="value.required"
-                  ng-disabled="value.disabled"></textarea>
+                  ng-disabled="value.disabled"
+                  ng-readonly="value.readonly"
+        ></textarea>
 
         <select ng-if="value.type === 'select' && !value.multiple" 
                 class="{{ value.fieldClass }} form-control" 
@@ -46,7 +84,11 @@
                 ng-disabled="value.disabled"
                 >
             <option value="" selected disabled>-- Please Select --</option>
-            <option ng-repeat="item in value.option" ng-value="item.id" ng-selected="value.selectedOptions.indexOf(item.id) >= 0" ng-disabled="item.disabled">{{item.name}}</option>
+            <option ng-repeat="item in value.option" 
+                    ng-value="item.id" 
+                    ng-selected="value.selectedOptions.indexOf(item.id) >= 0" 
+                    ng-disabled="item.disabled"
+                    >{{item.name}}</option>
         </select>
         <select ng-if="value.type === 'select' && value.multiple" 
                 class="{{ value.fieldClass }} form-control" 
@@ -60,7 +102,11 @@
                 ng-disabled="value.disabled"
                 multiple
                 >
-            <option ng-repeat="item in value.option" ng-value="item.id" ng-selected="value.selectedOptions.indexOf(item.id) >= 0" ng-disabled="item.disabled">{{item.name}}</option>
+            <option ng-repeat="item in value.option" 
+                    ng-value="item.id" 
+                    ng-selected="value.selectedOptions.indexOf(item.id) >= 0" 
+                    ng-disabled="item.disabled"
+                    >{{item.name}}</option>
         </select>
 
         <div ng-if="value.type === 'radio'"
@@ -79,7 +125,7 @@
                         ng-disabled="item.disabled"
                         ng-click="uncheckRadio(this, $event)"
                 /><div class="d-inline-block text align-top">{{ item.name }}</div>
-            </label>                
+            </label>
         </div>
 
         <div ng-if="value.type === 'checkbox'"
@@ -91,8 +137,6 @@
                         style="{{ value.fieldStyle }}" 
                         id="{{ value.field +'_'+ item.id }}" 
                         name="{{ value.field }}" 
-                        oninvalid="this.setCustomValidity('Please select at least one checkbox.')"
-                        oninput="this.setCustomValidity('')"
                         ng-init="formData.parameters[value.field][item.id] = value.checkedOptions; 
                                  formData.parameters[value.field].noChecked = true"
                         ng-model="formData.parameters[value.field][item.id]" 
@@ -102,7 +146,14 @@
                         ng-disabled="item.disabled"
                         ng-change="toggleCheckbox(this)"
                 /><div class="d-inline-block text align-top">{{ item.name }}</div>
-            </label>                
+            </label>
+        </div>
+
+        <div class="error text-left" ng-show="
+        value.required && addFrm.{{ value.field }}.$dirty && addFrm.{{ value.field }}.$invalid &&
+        (value.type === 'text' || value.type === 'date' || value.type === 'datetime' ||value.type === 'number' || value.type === 'password' || value.type === 'textarea')
+        ">
+            <span ng-show="addFrm.{{ value.field }}.$error.required">This field is required.</span>
         </div>
 
     </div>
@@ -111,6 +162,6 @@
         <div class="text-danger" style="color:red">{{ errorMsg }}</div>
     </div>
     <div class="form-group text-right">
-        <button type="submit" class="btn btn-success" ng-disabled="loading">Save</button>
+        <button type="submit" class="btn btn-success" ng-disabled="loading || !addFrm.$valid">Save</button>
     </div>
 </form>

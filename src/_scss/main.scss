@@ -8,6 +8,7 @@
 @import "../assets/css/style.css";
 
 @import "../assets/css/sweet-alert.css";
+@import "../assets/css/angularjs-datetime-picker.css";
 
 body {
     background: $white;
@@ -19,6 +20,12 @@ body {
 
 .hints {
     font-size: 14px;
+}
+
+.error {
+    font-size: 14px;
+    color: red;
+    letter-spacing: .2px;
 }
 
 .required {
@@ -65,6 +72,12 @@ input {
     outline: none;
     transition: all .4s;
 
+    &[readonly] {
+        &.datepicker {
+            background: $white !important;
+        }
+    }
+    
     &:disabled {
         background: $lightgrey-3;
         border: 1px solid $lightgrey-3;

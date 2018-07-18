@@ -5,6 +5,7 @@
 @import url(../assets/css/animations.css);
 @import url(../assets/css/style.css);
 @import url(../assets/css/sweet-alert.css);
+@import url(../assets/css/angularjs-datetime-picker.css);
 body {
   background: #FFF; }
 
@@ -13,6 +14,11 @@ body {
 
 .hints {
   font-size: 14px; }
+
+.error {
+  font-size: 14px;
+  color: red;
+  letter-spacing: .2px; }
 
 .required label {
   position: relative; }
@@ -42,6 +48,8 @@ input {
   padding: 5px;
   outline: none;
   transition: all .4s; }
+  input[readonly].datepicker {
+    background: #FFF !important; }
   input:disabled {
     background: #ddd;
     border: 1px solid #ddd; }
