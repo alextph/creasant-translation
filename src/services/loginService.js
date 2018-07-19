@@ -8,8 +8,8 @@ angular
 				var form_data = {
 					'login': login,
 					'pwd': pwd
-				}
-				
+        }
+
 				$http({
 					method: 'POST',
 					url: './api/admin/login/',
@@ -17,14 +17,15 @@ angular
 					headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 				})
 				.then(function (result) {
-					if (result.data.length == 0) {
+          console.log(111, result.data)
+					if (!result.data.admin_id) {
 						$scope.errorMsg = "Incorrect username/password";
 						$scope.loading = false;
 					} else {
-						sessionService.set('logged_admin', result.data[0].admin_id);
+						sessionService.set('logged_admin', result.data.admin_id);
 						$location.path('/admin/welcome');
 					}
-				});
+				})
 			},
 			logout: function(){
 				sessionService.destroy('logged_admin');

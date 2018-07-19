@@ -23,7 +23,7 @@ var logError = function (error) {
   this.emit('end');
 }
 
-// 
+//
 var configFile = path.join(__dirname, "config.json")
 var connConfig = {
   host: "",

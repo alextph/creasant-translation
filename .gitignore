@@ -2,3 +2,5 @@ config.json
 node_modules
 src/scripts
 src/styles
+*.zip
+dist
