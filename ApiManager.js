@@ -7,7 +7,10 @@ var Q = require('q');
 var squel = require("squel");
 var bodyParser = require('body-parser')
 var session = require('express-session')
+var autoload = require('auto-load')
 var _prefix = 'mbt';
+
+let schemaMap = autoload( path.join(__dirname, 'resources'))
 
 class ApiManager {
 
@@ -16,6 +19,12 @@ class ApiManager {
     this.app = express();
     this.app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
     this.initRoutes();
+  }
+
+  filter(resource, list) {
+    let schema = schemaMap[resource];
+    let keys = _.map(schema, 'field');
+    return _.map(list, (item)=> _.pick(item, keys))
   }
 
   authentication(req, res, next) {
@@ -80,6 +89,7 @@ class ApiManager {
         }
 
         if (!result) return res.sendStatus(404)
+        result = this.filter(req.params.resource, result)
         res.send(result)
       })
       .catch(error=> {

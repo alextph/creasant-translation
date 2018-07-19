@@ -44,6 +44,7 @@
     "angular-smart-table": "^2.1.11",
     "angular-sweetalert": "^1.1.2",
     "angularjs-datetime-picker-v2": "^0.2.2",
+    "auto-load": "^3.0.0",
     "express-session": "^1.15.6",
     "npm": "^6.2.0"
   },
