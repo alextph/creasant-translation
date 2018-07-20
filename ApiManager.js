@@ -17,7 +17,7 @@ class ApiManager {
   constructor(config) {
     this.config = config;
     this.app = express();
-    this.app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
+    this.app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 10 * 60 * 1000 }}))
     this.initRoutes();
   }
 
@@ -229,81 +229,55 @@ class ApiManager {
     next()
   }
 
-  manageAdmin(req, res, next) {
-    if (req.params.action == 'login') {
-      Q()
-      .then(() => {
-        let sql = squel.select().from("mbt_sys_admin")
-                  .field("admin_id")
-        sql = sql.where(`is_active = ?`, 1);
-        sql = sql.where(`is_delete = ?`, 0);
-        if (req.query) {
-          _.each(req.query, (value, key) => {
-            sql = sql.where(`${key} = ?`, value)
-          })
-        }
-        sql = sql.toString();
-        return Q.ninvoke(req.connection, "query", sql);
-      })
-      .spread(result => {
-        result = _.head(result)
+  adminLogin(req, res, next) {
+    Q()
+    .then(() => {
+      let sql = squel.select().from("mbt_sys_admin")
+                // .field("admin_id")
+      sql = sql.where(`is_active = ?`, 1);
+      sql = sql.where(`is_delete = ?`, 0);
+      if (req.query) {
+        _.each(req.query, (value, key) => {
+          sql = sql.where(`${key} = ?`, value)
+        })
+      }
+      sql = sql.toString();
+      return Q.ninvoke(req.connection, "query", sql);
+    })
+    .spread(result => {
+      result = _.head(result)
 
-        if (!result) return res.sendStatus(404)
+      if (!result) return res.sendStatus(404)
 
-        req.session.user = result
+      req.session.user = result
 
-        console.log(req.session.user)
-        res.send(result)
-      })
-      .catch(error => {
-        return res.status(500).send(error);
-      })
-      .then(() => {
-        req.connection.end();
-      })
-    } else if (req.params.action == 'fetchUser') {
-      res.send(req.session.user)
-      // Q()
-      //   .then(() => {
-      //     let sql = squel.select().from("mbt_sys_admin")
-      //               .field("name")
-      //               .field("email")
-      //               .field("profile_pic")
-      //               .field("level")
-      //     sql = sql.where(`is_active = ?`, 1);
-      //     sql = sql.where(`is_delete = ?`, 0);
-      //     if (req.query) {
-      //       _.each(req.query, (value, key) => {
-      //         sql = sql.where(`${key} = ?`, value)
-      //       })
-      //     }
-      //     sql = sql.toString();
-      //     return Q.ninvoke(req.connection, "query", sql);
-      //   })
-      //   .spread(result => {
-      //     if (req.params.id) {
-      //       result = _.head(result)
-      //     }
+      res.send(result)
+    })
+    .catch(error => {
+      return res.status(500).send(error);
+    })
+    .then(() => {
+      req.connection.end();
+    })
+  }
 
-      //     if (!result) return res.sendStatus(404)
-      //     res.send(result)
-      //   })
-      //   .catch(error => {
-      //     return res.status(500).send(error);
-      //   })
-      //   .then(() => {
-      //     req.connection.end();
-      //   })
-    } else if (req.params.action == 'logout') {
-      delete req.session.user
-      res.send('ok')
-    }
+  adminLogout(req, res, next) {
+    delete req.session.user
+    res.send('ok')
+  }
+
+  adminFetchUser(req, res, next) {
+    res.send(req.session.user)
   }
 
   initRoutes() {
     this.app.use(bodyParser.json())
     this.app.get(`/api/search/:key`, this.validateInput.bind(this), this.createConnection.bind(this), this.searchResource.bind(this))
-    this.app.post(`/api/admin/:action`, this.validateInput.bind(this), this.createConnection.bind(this), this.manageAdmin.bind(this))
+
+    this.app.post(`/api/admin/login`, this.validateInput.bind(this), this.createConnection.bind(this), this.adminLogin.bind(this))
+    this.app.get(`/api/admin/logout`, this.validateInput.bind(this), this.adminLogout.bind(this))
+    this.app.get(`/api/admin/fetchUser`, this.validateInput.bind(this), this.adminFetchUser.bind(this))
+
     this.app.get(`/api/admin/list/:resource`, this.validateInput.bind(this), this.createConnection.bind(this), this.getResource.bind(this))
 
     this.app.get(`/api/:resource/:id?`, this.authentication.bind(this), this.validateInput.bind(this), this.createConnection.bind(this), this.getResource.bind(this))

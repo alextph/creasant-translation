@@ -1,53 +1,50 @@
 'use strict';
 
-angular
-    .module('loginService', [])
-	.factory('loginService', function($http, $location, sessionService){
-		return{
-			login: function(login, pwd, $scope){
-				var form_data = {
-					'login': login,
-					'pwd': pwd
+let _ = require("lodash")
+
+exports = module.exports = ($http, $location)=> {
+
+  class LoginService {
+
+    constructor() {
+      this.user = null;
+      this.defaultUser = {
+        image: 'assets/images/user_icon.png'
+      }
+    }
+
+    login(login, pwd) {
+      var form_data = {
+        'login': login,
+        'pwd': pwd
+      }
+      return $http.post('./api/admin/login', form_data)
+        .then( (result)=> {
+          if (!result.data.admin_id) {
+            throw new Error("Incorrect username/password");
+          } else {
+            this.user = _.extend(this.defaultUser, result.data);
+            $location.path('/admin/welcome');
+          }
+        })
+    }
+    logout(){
+      this.user = null;
+      $http.get('./api/admin/logout')
+        .then((result)=>{
+          $location.path('/admin/login');
+        })
+    }
+    fetchUser(){
+      return $http.get('./api/admin/fetchUser').then((result)=>{
+        if (_.isEmpty(result.data)) {
+          return this.user = null
         }
+        return this.user = _.extend(this.defaultUser, result.data);
+      })
+    }
+  }
 
-				$http({
-					method: 'POST',
-					url: './api/admin/login/',
-					params: form_data,
-					headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-				})
-				.then(function (result) {
-          console.log(111, result.data)
-					if (!result.data.admin_id) {
-						$scope.errorMsg = "Incorrect username/password";
-						$scope.loading = false;
-					} else {
-						sessionService.set('logged_admin', result.data.admin_id);
-						$location.path('/admin/welcome');
-					}
-				})
-			},
-			logout: function(){
-				sessionService.destroy('logged_admin');
-				$location.path('/admin/login');
-			},
-			islogged: function(){
-				var checkSession = (sessionService.get('logged_admin') != undefined && sessionService.get('logged_admin') != null) ? true : false;
-				return checkSession;
-			},
-			fetchuser: function(){
-				var form_data = {
-					'admin_id': sessionService.get('logged_admin'),
-				}
+  return new LoginService();
 
-				return $http({
-					method: 'POST',
-					url: './api/admin/fetchUser/',
-					params: form_data,
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}
-				})
-			}
-		}
-	});
+}

@@ -43,6 +43,15 @@ if (fs.existsSync(configFile)){
 gulp.task('webpack', ()=> {
   let config = {
     output:{filename:'bundle.js'},
+    module: {
+      loaders: [
+        {
+          test: /\.js$/,
+          use: [ 'babel-loader'],
+          exclude: /node_modules/
+        }
+      ]
+    }
   }
   return gulp.src('src/_js/app.js')
     .pipe(webpack(config))

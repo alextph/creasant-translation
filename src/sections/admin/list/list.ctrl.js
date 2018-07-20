@@ -67,22 +67,11 @@ angular
 
         $scope.breadcrumbData = {
             breadcrumb: [
-                { name: pageTitle, portal: "" }, 
+                { name: pageTitle, portal: "" },
             ]
         };
 
-        var form_data = {
-
-        };
-
-        $http({
-            method: 'GET',
-            url: './api/admin/list/' + $routeParams.page,
-            params: form_data,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
+        $http.get( `./api/admin/list/${$routeParams.page}`)
         .then(function (result) {
             if (result.data.length != 0) {
                 emptyData = false;

@@ -1,57 +1,48 @@
 'use strict';
-angular
-    .module('app.core')
-    .component('sideBar', {
-        templateUrl: 'components/sidebar/sidebar.tpl.html',
-        controller: 'SidebarController as sidebar',
-        bindings: {
-            data: '=',
+
+exports = module.exports = ($scope, $location, loginService)=> {
+
+  class SidebarController {
+
+    constructor() {
+      this.loginService = loginService;
+      this.isOpen = true
+
+      loginService.fetchUser().then((user)=> {
+        if (!user) {
+          loginService.logout();
+        } else {
+          $location.path('/admin/welcome')
         }
-    })
-    .controller('SidebarController', function ($scope, $location, $routeParams, loginService) {
-        $scope.$watch(
-            function () {
-                return loginService.islogged();
-            },
-            function (newValue) {
-                if (newValue) {
-                    $scope.islogged = true;
-                } else {
-                    angular.element(document.getElementById('sidebar')).removeClass('open');
-                    $scope.islogged = false;
-                }
-            }
-        );
+      });
 
-        $scope.userProfilePic = 'assets/images/user_icon.png';
-        $scope.userName = '[Username]';
-        $scope.userLevel = '[User Level]';
+      this.items = [
+          {
+              href: "#/admin/welcome",
+              page: "welcome",
+              name: "Welcome",
+              icon: "",
+          },
+          {
+              href: "#/admin/list/class",
+              page: "class",
+              name: "Class",
+              icon: "",
+          },
+      ];
+    }
+  }
 
-        loginService.fetchuser().then(function(result) {
-            if (result.data.length != 1) {
-                loginService.logout();
-            } else {
-                $scope.userName = result.data[0].name;
-                $scope.userLevel = (result.data[0].level == 'SUPERADMIN') ? 'Super Administrator' : 'Administrator';
-            }
-        });
+  return new SidebarController()
+}
 
-        $scope.items = [
-            {
-                href: "#/admin/welcome",
-                page: "welcome",
-                name: "Welcome",
-                icon: "",
-            },
-            {
-                href: "#/admin/list/class",
-                page: "class",
-                name: "Class",
-                icon: "",
-            },
-        ];
+angular.module('app.core')
+  .controller('SidebarController', exports)
+  .component('sideBar', {
+      templateUrl: 'components/sidebar/sidebar.tpl.html',
+      controller: 'SidebarController as ctrl',
+      bindings: {
+          data: '=',
+      }
+  })
 
-        $scope.isActive = function (loc) {
-            return loc == $routeParams.page;
-        }
-    });

@@ -1,16 +1,17 @@
-<div id="sidebar" class="open" ng-if="islogged">
+<div id="sidebar" ng-class="{open: ctrl.isOpen}" ng-show="ctrl.loginService.user">
     <div class="user-info">
-        <img class="profile-pic" ng-src="{{userProfilePic}}" />
+        <img class="profile-pic" ng-src="{{ctrl.loginService.user.image}}" />
         <div class="info">
-            <div class="name" ng-bind="userName"></div>
-            <div class="user-level" ng-bind="userLevel"></div>
+            <div class="name">{{ctrl.loginService.user.name}}</div>
+            <div class="user-level" ng-hide="ctrl.loginService.user.level == 'SUPERADMIN'">Administrator</div>
+            <div class="user-level" ng-show="ctrl.loginService.user.level == 'SUPERADMIN'">Super Administrator</div>
         </div>
     </div>
 
     <nav>
         <div class="topic">NAVIGATION</div>
         <ul>
-            <li ng-repeat="item in items" ng-class="{ active: isActive('{{item.page}}')}">
+            <li ng-repeat="item in ctrl.items" ng-class="{ active: isActive('{{item.page}}')}">
                 <a ng-href="{{item.href}}">
                     <i ng-class="(!item.icon) ? 'fas fa-stream' : item.icon"></i><span ng-bind="item.name"></span>
                 </a>

@@ -1,5 +1,8 @@
 'use strict';
 
+import 'babel-runtime/core-js/promise'
+import 'babel-polyfill'
+
 import 'angular/angular.min'
 import 'angular-route'
 import 'angular-animate'
@@ -22,12 +25,10 @@ import '../components/listdata/listdata.ctrl'
 import '../components/adddata/adddata.ctrl'
 import '../components/breadcrumb/breadcrumb.ctrl'
 
-import '../services/loginService'
-import '../services/sessionService'
-
 import 'angular-sweetalert'
 import 'angular-smart-table'
 import 'angularjs-datetime-picker-v2'
 
-angular.module('app', ['ngRoute', 'ngAnimate', 'ngSanitize', 'app.routes', 'app.core', 'app.services', 'app.config', 'loginService', 'sessionService', 'oitozero.ngSweetAlert', 'smart-table', 'angularjs-datetime-picker'
-]);
+angular
+  .module('app', ['ngRoute', 'ngAnimate', 'ngSanitize', 'app.routes', 'app.core', 'app.services', 'app.config', 'oitozero.ngSweetAlert', 'smart-table', 'angularjs-datetime-picker'])
+

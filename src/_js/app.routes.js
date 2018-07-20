@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-    .module('app.routes', ['ngRoute', 'loginService'])
+    .module('app.routes', ['ngRoute'])
     .config(($routeProvider, $locationProvider) => {
         $locationProvider.hashPrefix('');
         $routeProvider.
@@ -21,35 +21,14 @@ angular
                     return 'sections/admin/' + params.page + '/' + params.page+'.tpl.html'
                 },
                 controller: 'AdminController as admin',
-                resolve: {
-                    loggedIn: function (loginService, $route, $location) {
-                        if (!loginService.islogged()) {
-                            $location.path('/admin/login')
-                        }
-                    }
-                }
             })
             .when('/admin/list/:page', {
                 templateUrl: 'sections/admin/list/list.tpl.html',
                 controller: 'ListController as list',
-                resolve: {
-                    loggedIn: function (loginService, $location) {
-                        if (!loginService.islogged()) {
-                            $location.path('/admin/login')
-                        }
-                    }
-                }
             })
             .when('/admin/add/:page', {
                 templateUrl: 'sections/admin/add/add.tpl.html',
                 controller: 'AddController as add',
-                resolve: {
-                    loggedIn: function (loginService, $location) {
-                        if (!loginService.islogged()) {
-                            $location.path('/admin/login')
-                        }
-                    }
-                }
             })
             .otherwise({
                 redirectTo: '/'
