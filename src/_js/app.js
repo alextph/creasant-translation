@@ -1,6 +1,5 @@
 'use strict';
 
-import 'babel-runtime/core-js/promise'
 import 'babel-polyfill'
 
 import 'angular/angular.min'

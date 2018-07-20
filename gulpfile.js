@@ -47,8 +47,12 @@ gulp.task('webpack', ()=> {
       loaders: [
         {
           test: /\.js$/,
-          use: [ 'babel-loader'],
-          exclude: /node_modules/
+          loader: "babel-loader",
+          exclude: /node_modules/,
+          query: {
+            plugins: ['transform-runtime'],
+            presets: ['es2015'],
+          }
         }
       ]
     }
